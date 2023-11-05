@@ -29,29 +29,31 @@ jobs:
         name: python-package-distributions
         path: dist/
 
-  publish-to-testpypi:
-    name: Publish to TestPyPI
-    needs:
-    - build
-    runs-on: ubuntu-latest
+  # NOTE: testpypi is disabled since it will always upload wheels with the same
+  # tag which causes filename reuse error for PyPI
+  # publish-to-testpypi:
+  #   name: Publish to TestPyPI
+  #   needs:
+  #   - build
+  #   runs-on: ubuntu-latest
 
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/laplace-blivedm
+  #   environment:
+  #     name: testpypi
+  #     url: https://test.pypi.org/p/laplace-blivedm
 
-    permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+  #   permissions:
+  #     id-token: write  # IMPORTANT: mandatory for trusted publishing
 
-    steps:
-    - name: Download all the dists
-      uses: actions/download-artifact@v3
-      with:
-        name: python-package-distributions
-        path: dist/
-    - name: Publish distribution to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
+  #   steps:
+  #   - name: Download all the dists
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: python-package-distributions
+  #       path: dist/
+  #   - name: Publish distribution to TestPyPI
+  #     uses: pypa/gh-action-pypi-publish@release/v1
+  #     with:
+  #       repository-url: https://test.pypi.org/legacy/
 
   publish-to-pypi:
     name: Publish to PyPI
@@ -87,6 +89,7 @@ jobs:
       id-token: write  # IMPORTANT: mandatory for sigstore
 
     steps:
+    # checkout is required for gh cli to work
     - uses: actions/checkout@v4
     - name: Download all the dists
       uses: actions/download-artifact@v3
