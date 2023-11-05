@@ -14,6 +14,19 @@ __all__ = (
     'GuardBuyMessage',
     'SuperChatMessage',
     'SuperChatDeleteMessage',
+
+    # custom cmds
+    'InteractWordMessage',
+    'UserToastMessage',
+    'UserVirtualMvp',
+    'WarningMessage',
+    'CutOffMessage',
+    'RoomSilentOnMessage',
+    'RoomSilentOffMessage',
+    'RoomAdminsMessage',
+    'RoomAdminEntranceMessage',
+    'RoomAdminRevokeMessage',
+    'RoomBlockMessage',
 )
 
 
@@ -398,4 +411,274 @@ class SuperChatDeleteMessage:
     def from_command(cls, data: dict):
         return cls(
             ids=data['ids'],
+        )
+
+
+@dataclasses.dataclass
+class InteractWordMessage:
+    """
+    交互事件
+    """
+
+    uid: int = 0
+    """用户ID"""
+    uname: str = ''
+    """用户名"""
+    msg_type: int = 0
+    """消息类型"""
+    timestamp: int = 0
+    """时间戳"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uid=data['uid'],
+            uname=data['uname'],
+            msg_type=data['msg_type'],
+            timestamp=data['timestamp'],
+        )
+
+
+@dataclasses.dataclass
+class UserToastMessage:
+    """
+    用户大航海信息，用来代替 GuardBuyMessage
+    """
+
+    uid: int = 0
+    """用户ID"""
+    username: str = ''
+    """用户名"""
+    guard_level: int = 0
+    """舰队等级，0非舰队，1总督，2提督，3舰长"""
+    num: int = 0
+    """数量"""
+    price: int = 0
+    """单价金瓜子数"""
+    role_name: str = ''
+    """舰长"""
+    toast_msg: str = ''
+    """`<%_username_%>` 自动续费了舰长"""
+    start_time: int = 0
+    """开始时间戳，和结束时间戳相同"""
+    end_time: int = 0
+    """结束时间戳，和开始时间戳相同"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uid=data['uid'],
+            username=data['username'],
+            guard_level=data['guard_level'],
+            num=data['num'],
+            price=data['price'],
+            role_name=data['role_name'],
+            toast_msg=data['toast_msg'],
+            start_time=data['start_time'],
+            end_time=data['end_time'],
+        )
+
+
+@dataclasses.dataclass
+class UserVirtualMvp:
+    """
+    守护圣法师事件
+    """
+
+    action: str = ''
+    """文本「解锁」"""
+    goods_icon: str = ''
+    """礼物图标URL"""
+    goods_name: str = ''
+    """「守护圣法师x7天」"""
+    goods_num: int = 0
+    """数量"""
+    goods_price: int = 0
+    """价格，要除以 1000"""
+    success_toast: str = ''
+    """「解锁成功，已为您穿戴守护圣法师装扮」"""
+    timestamp: int = 0
+    """时间戳"""
+    uid: int = 0
+    """用户ID"""
+    uname: str = ''
+    """用户名"""
+    user_guard_level: int = 0
+    """舰队等级，0非舰队，1总督，2提督，3舰长"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uid=data['uid'],
+            uname=data['uname'],
+            user_guard_level=data['user_guard_level'],
+            goods_num=data['goods_num'],
+            goods_price=data['goods_price'],
+            success_toast=data['success_toast'],
+            action=data['action'],
+            goods_icon=data['goods_icon'],
+            goods_name=data['goods_name'],
+            timestamp=data['timestamp'],
+        )
+
+@dataclasses.dataclass
+class WarningMessage:
+    """
+    直播间被警告
+    """
+
+    roomid: int = 0
+    """直播间id"""
+    msg: str = ''
+    """警告原因，ie. 图片内容不适宜，请立即调整"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            roomid=data['roomid'],
+            msg=data['msg'],
+        )
+
+@dataclasses.dataclass
+class CutOffMessage:
+    """
+    直播间被切断
+    """
+
+    roomid: int = 0
+    """直播间id"""
+    msg: str = ''
+    """切断原因，ie. 违反直播言论规范，请立即调整"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            roomid=data['roomid'],
+            msg=data['msg'],
+        )
+
+@dataclasses.dataclass
+class RoomSilentOnMessage:
+    """
+    开启等级禁言
+    """
+
+    type: str = ''
+    """禁言类型，level 用户等级禁言，medal 粉丝勋章等级禁言，member 全员"""
+    level: int = 0
+    """禁言等级"""
+    second: int = 0
+    """时间戳"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            type=data['type'],
+            level=data['level'],
+            second=data['second'],
+        )
+
+
+@dataclasses.dataclass
+class RoomSilentOffMessage:
+    """
+    关闭等级禁言
+    """
+    type: str = ''
+    """禁言类型，关闭禁言时返回 ''"""
+    level: int = 0
+    """禁言等级，关闭禁言时返回 0"""
+    second: int = 0
+    """时间戳"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            type=data['type'],
+            level=data['level'],
+            second=data['second'],
+        )
+
+
+@dataclasses.dataclass
+class RoomAdminsMessage:
+    """
+    房管列表变更
+    """
+    uids: str = ''
+    """当前房管UIDs"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uids=data['uids'],
+        )
+
+
+@dataclasses.dataclass
+class RoomAdminEntranceMessage:
+    """
+    任命房管
+    """
+
+    uid: int = 0
+    """用户ID"""
+    dmscore: int = 0
+    """45，作用未知"""
+    level: int = 0
+    """1"""
+    msg: str = ''
+    """统提示：你已被主播设为房管"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uid=data['uid'],
+            dmscore=data['dmscore'],
+            level=data['level'],
+            msg=data['msg'],
+        )
+
+
+@dataclasses.dataclass
+class RoomAdminRevokeMessage:
+    """
+    撤销房管
+    """
+
+    uid: int = 0
+    """被撤销房管的uid"""
+    msg: str = ''
+    """文本，撤销房管"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uid=data['uid'],
+            msg=data['msg'],
+        )
+
+
+@dataclasses.dataclass
+class RoomBlockMessage:
+    """
+    指定观众禁言
+    """
+
+    uid: int = 0
+    """被拉黑用户的uid"""
+    uname: str = ''
+    """被拉黑用户的用户名"""
+    operator: int = 0
+    """拉黑操作者，1为房管，2为主播，其它未知"""
+    dmscore: int = 0
+    """30，作用未知"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            uid=data['uid'],
+            uname=data['uname'],
+            operator=data['operator'],
+            dmscore=data['dmscore'],
         )
