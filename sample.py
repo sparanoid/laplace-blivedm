@@ -2,7 +2,7 @@
 import asyncio
 import http.cookies
 import random
-from typing import *
+from typing import Optional
 
 import aiohttp
 
@@ -30,7 +30,8 @@ async def main():
         await run_single_client()
         await run_multi_clients()
     finally:
-        await session.close()
+        if session is not None:
+            await session.close()
 
 
 def init_session():
