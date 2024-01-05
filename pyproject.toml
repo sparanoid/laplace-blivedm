@@ -21,3 +21,6 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/sparanoid/laplace-blivedm"
 "Bug Tracker" = "https://github.com/sparanoid/laplace-blivedm/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["blivedm"]
