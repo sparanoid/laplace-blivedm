@@ -6,7 +6,7 @@ import hmac
 import json
 import logging
 import uuid
-from typing import *
+from typing import List, Optional
 
 import aiohttp
 
@@ -274,10 +274,14 @@ class OpenLiveClient(ws_base.WebSocketClientBase):
         """
         返回WebSocket连接的URL，可以在这里做故障转移和负载均衡
         """
+        if self._host_server_url_list is None:
+            # Handle the case where the list is None. For example:
+            raise ValueError("Host server URL list is not initialized.")
         return self._host_server_url_list[retry_count % len(self._host_server_url_list)]
 
     async def _send_auth(self):
         """
         发送认证包
         """
-        await self._websocket.send_bytes(self._make_packet(self._auth_body, ws_base.Operation.AUTH))
+        if self._websocket is not None and self._auth_body is not None:
+            await self._websocket.send_bytes(self._make_packet(self._auth_body, ws_base.Operation.AUTH))

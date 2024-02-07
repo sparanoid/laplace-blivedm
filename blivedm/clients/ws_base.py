@@ -5,7 +5,7 @@ import json
 import logging
 import struct
 import zlib
-from typing import *
+from typing import Callable, NamedTuple, Optional, Union
 
 import aiohttp
 import brotli
@@ -170,7 +170,8 @@ class WebSocketClientBase:
             logger.warning('room=%s client is stopped, cannot stop() again', self.room_id)
             return
 
-        self._network_future.cancel()
+        if self._network_future is not None:
+            self._network_future.cancel()
 
     async def stop_and_close(self):
         """
@@ -189,7 +190,8 @@ class WebSocketClientBase:
             logger.warning('room=%s client is stopped, cannot join()', self.room_id)
             return
 
-        await asyncio.shield(self._network_future)
+        if self._network_future is not None:
+            await asyncio.shield(self._network_future)
 
     async def close(self):
         """
@@ -467,9 +469,11 @@ class WebSocketClientBase:
         elif header.operation == Operation.AUTH_REPLY:
             # 认证响应
             body = json.loads(body.decode('utf-8'))
+            print(f"Body: {body}, Type: {type(body)}")
             if body['code'] != AuthReplyCode.OK:
                 raise AuthError(f"auth reply error, code={body['code']}, body={body}")
-            await self._websocket.send_bytes(self._make_packet({}, Operation.HEARTBEAT))
+            if self._websocket is not None:
+                await self._websocket.send_bytes(self._make_packet({}, Operation.HEARTBEAT))
 
         else:
             # 未知消息

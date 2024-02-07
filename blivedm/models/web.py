@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import dataclasses
 import json
-from typing import *
+from typing import List, Union
 
 __all__ = (
     'HeartbeatMessage',
@@ -163,12 +163,12 @@ class DanmakuMessage:
             mobile_verify=info[2][6],
             uname_color=info[2][7],
 
-            medal_level=medal_level,
+            medal_level=medal_level, # type: ignore
             medal_name=medal_name,
             runame=runame,
             medal_room_id=room_id,
             mcolor=mcolor,
-            special_medal=special_medal,
+            special_medal=special_medal, # type: ignore
 
             user_level=info[4][0],
             ulevel_color=info[4][2],

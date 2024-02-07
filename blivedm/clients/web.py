@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import logging
-from typing import *
+from typing import List, Optional
 
 import aiohttp
 import yarl
@@ -246,6 +246,8 @@ class BLiveClient(ws_base.WebSocketClientBase):
         """
         返回WebSocket连接的URL，可以在这里做故障转移和负载均衡
         """
+        if not self._host_server_list:
+            raise ValueError("Host server list is not available.")
         host_server = self._host_server_list[retry_count % len(self._host_server_list)]
         return f"wss://{host_server['host']}:{host_server['wss_port']}/sub"
 
@@ -253,6 +255,9 @@ class BLiveClient(ws_base.WebSocketClientBase):
         """
         发送认证包
         """
+        if self._websocket is None:
+            raise RuntimeError("Websocket is not initialized")
+
         auth_params = {
             'uid': self._uid,
             'roomid': self._room_id,

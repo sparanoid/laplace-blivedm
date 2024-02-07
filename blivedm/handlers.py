@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from typing import *
+from typing import Any, Callable, Dict, Optional
 
 from .clients import ws_base
 from .models import web as web_models, open_live as open_models

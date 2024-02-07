@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import dataclasses
-from typing import *
+from typing import List
 
 __all__ = (
     'DanmakuMessage',
