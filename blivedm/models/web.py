@@ -542,7 +542,7 @@ class RoomSilentOnMessage:
     """
 
     type: str = ""
-    """禁言类型，level 用户等级禁言，medal 粉丝勋章等级禁言，member 全员"""
+    """禁言类型，level 用户等级禁言，medal 粉丝勋章等级禁言，member 全员，wealth 荣耀等级"""
     level: int = 0
     """禁言等级"""
     second: int = 0
