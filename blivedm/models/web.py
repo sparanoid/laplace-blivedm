@@ -22,6 +22,8 @@ __all__ = (
     "RoomAdminEntranceMessage",
     "RoomAdminRevokeMessage",
     "RoomBlockMessage",
+    "LiveMessage",
+    "PreparingMessage",
 )
 
 
@@ -141,8 +143,8 @@ class DanmakuMessage:
             old_title = info[5][0]
             title = info[5][1]
         else:
-            old_title = ''
-            title = ''
+            old_title = ""
+            title = ""
 
         return cls(
             mode=info[0][1],
@@ -175,10 +177,8 @@ class DanmakuMessage:
             user_level=info[4][0],
             ulevel_color=info[4][2],
             ulevel_rank=info[4][3],
-
             old_title=old_title,
             title=title,
-
             privilege_type=info[7],
         )
 
@@ -420,6 +420,54 @@ class InteractWordMessage:
             uname=data["uname"],
             msg_type=data["msg_type"],
             timestamp=data["timestamp"],
+        )
+
+
+@dataclasses.dataclass
+class LiveMessage:
+    """
+    开播事件
+    """
+
+    live_key: str = ""
+    """直播key"""
+    voice_background: str = ""
+    sub_session_key: str = ""
+    live_platform: str = ""
+    """开播平台：例如 pc"""
+    live_model: int = 0
+    """未知，通常为 0"""
+    roomid: int = 0
+    """房间号"""
+    live_time: int = 0
+    """开播时间戳"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            live_key=data["live_key"],
+            voice_background=data["voice_background"],
+            sub_session_key=data["sub_session_key"],
+            live_platform=data["live_platform"],
+            live_model=data["live_model"],
+            roomid=data["roomid"],
+            live_time=data["live_time"],
+        )
+
+
+@dataclasses.dataclass
+class PreparingMessage:
+    """
+    下播事件
+    """
+
+    roomid: str = ""
+    """直播间房间号的字符串形式"""
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            roomid=data["roomid"],
         )
 
 

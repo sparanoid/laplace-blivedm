@@ -124,6 +124,10 @@ class BaseHandler(HandlerInterface):
             "_on_super_chat_delete", web_models.SuperChatDeleteMessage
         ),
         # eop-blive 自定义事件
+        "LIVE": _make_raw_msg_callback("_on_live", web_models.LiveMessage, True),
+        "PREPARING": _make_raw_msg_callback(
+            "_on_preparing", web_models.PreparingMessage, True
+        ),
         "INTERACT_WORD": _make_raw_msg_callback(
             "_on_interact_word", web_models.InteractWordMessage
         ),
@@ -185,7 +189,7 @@ class BaseHandler(HandlerInterface):
         "LIVE_OPEN_PLATFORM_LIKE": _make_msg_callback(
             "_on_open_live_like", open_models.LikeMessage
         ),
-    }
+    }  # type: ignore
     """cmd -> 处理回调"""
 
     def handle(self, client: ws_base.WebSocketClientBase, command: dict):
@@ -252,6 +256,24 @@ class BaseHandler(HandlerInterface):
         """
 
     # eop-blive 自定义事件
+    def _on_live(
+        self,
+        client: ws_base.WebSocketClientBase,
+        message: web_models.LiveMessage,
+    ):
+        """
+        _on_live
+        """
+
+    def _on_preparing(
+        self,
+        client: ws_base.WebSocketClientBase,
+        message: web_models.PreparingMessage,
+    ):
+        """
+        _on_preparing
+        """
+
     def _on_interact_word(
         self,
         client: ws_base.WebSocketClientBase,
