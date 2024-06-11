@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "laplace-blivedm"
-version = "0.0.4"
+version = "0.0.6"
 authors = [
   { name="Sparanoid", email="t@sparanoid.com" },
   { name="xfgryujk", email="xfgryujk@126.com" },
