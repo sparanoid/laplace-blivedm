@@ -137,6 +137,13 @@ class DanmakuMessage:
             mcolor = 0
             special_medal = 0
 
+        if len(info[5]) != 0:
+            old_title = info[5][0]
+            title = info[5][1]
+        else:
+            old_title = ''
+            title = ''
+
         return cls(
             mode=info[0][1],
             font_size=info[0][2],
@@ -168,8 +175,10 @@ class DanmakuMessage:
             user_level=info[4][0],
             ulevel_color=info[4][2],
             ulevel_rank=info[4][3],
-            old_title=info[5][0],
-            title=info[5][1],
+
+            old_title=old_title,
+            title=title,
+
             privilege_type=info[7],
         )
 
